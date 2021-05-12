@@ -1,11 +1,40 @@
 import { Container, CssBaseline } from '@material-ui/core'
-import React, { useMemo } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getFetch } from '../helpers/fetchApi'
+import AppLayout from './AppLayout'
+import RequestTabs from './RequestTabs'
 import Table from './Table'
 
 const Request = () => {
-  const {data: requestList, isLoading} = useQuery('requests', () => fetchRequests())
+  const [currentTab, setCurrentTab] = useState('all')
+
+  const {
+    data: requestList,
+    refetch,
+    isLoading
+  } = useQuery('requests', () => fetchRequests())
+  const fetchRequests = async () => {
+    let url = '/api/v1/requests'
+    let headers = {
+      'Content-Type': 'application/json'
+    }
+    let request = {
+      url,
+      headers,
+      body: {
+        requestType: currentTab
+      }
+    }
+
+    const { response, error } = await getFetch(request)
+    console.log(response)
+    return response.body.data
+  }
+
+  useEffect(() => {
+    refetch()
+  }, [currentTab])
 
   const columns = useMemo(
     () => [
@@ -40,29 +69,36 @@ const Request = () => {
     ],
     []
   )
-
-  const fetchRequests = async () => {
-    let url = '/api/v1/requests'
-    let headers = {
-      'Content-Type': 'application/json'
+  
+    const handleTabChange = newValue => {
+      setCurrentTab(newValue)
     }
-
-    const { response, error } = await getFetch({url, headers})
-    console.log(response)
-    return response.body.data
-  }
 
   if (isLoading) {
     return <div>Loading...</div>
   }
 
   console.log(requestList)
+
   return (
-    <Container>
-      <CssBaseline />
-      <Table columns={columns} data={requestList} />
-    </Container>
+    <AppLayout>
+      <Container style={styles.container}>
+        <RequestTabs
+          value={currentTab}
+          handleTabChange={handleTabChange}
+        />
+        <Table columns={columns} data={requestList} />
+      </Container>
+    </AppLayout>
   )
+}
+
+const styles = {
+  container: {
+    width: 'inherit',
+    marginTop: 80,
+    minHeight: '100vh',
+  }
 }
 
 export default Request;
