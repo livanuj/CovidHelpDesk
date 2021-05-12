@@ -5,22 +5,33 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
+import { QueryClient, QueryClientProvider } from 'react-query'
+import { ReactQueryDevtools } from "react-query/devtools"
 
-const Hello = props => (
-  <div>Hello {props.name}!</div>
-)
+import Request from './components/Request'
 
-Hello.defaultProps = {
+const queryClient = new QueryClient();
+
+const ReactApp = () => {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Request />
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
+  )
+}
+
+ReactApp.defaultProps = {
   name: 'David'
 }
 
-Hello.propTypes = {
+ReactApp.propTypes = {
   name: PropTypes.string
 }
 
 document.addEventListener('DOMContentLoaded', () => {
   ReactDOM.render(
-    <Hello name="React" />,
+    <ReactApp name="React" />,
     document.body.appendChild(document.createElement('div')),
   )
 })
