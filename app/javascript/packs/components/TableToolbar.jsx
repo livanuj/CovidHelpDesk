@@ -1,12 +1,13 @@
 import React from 'react'
 
 import clsx from 'clsx'
-import { lighten, makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
 import Tooltip from '@material-ui/core/Tooltip'
 import { Button } from '@material-ui/core'
+import { LocalHospitalRounded } from '@material-ui/icons'
 
 const useToolbarStyles = makeStyles(theme => ({
   root: {
@@ -30,8 +31,9 @@ const TableToolbar = props => {
   const classes = useToolbarStyles()
   const {
     numSelected,
-    deleteUserHandler,
+    bulkHelpHandler,
   } = props
+
   return (
     <Toolbar
       className={clsx(classes.root, {
@@ -53,13 +55,14 @@ const TableToolbar = props => {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip>
+        <Tooltip style={{width: 185}}>
           <Button
             variant="contained"
             color="primary"
-            onClick={deleteUserHandler}
+            startIcon={<LocalHospitalRounded />}
+            onClick={bulkHelpHandler}
           >
-            Help
+            Help Them
           </Button>
         </Tooltip>
       ) : null }
@@ -69,7 +72,7 @@ const TableToolbar = props => {
 
 TableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  deleteUserHandler: PropTypes.func.isRequired,
+  bulkHelpHandler: PropTypes.func.isRequired,
 }
 
 export default TableToolbar

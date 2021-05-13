@@ -1,7 +1,7 @@
 import React from 'react';
-import { AppBar, Button, Container, CssBaseline, StylesProvider, Toolbar, Typography } from '@material-ui/core'
-import { CloudUpload } from '@material-ui/icons';
+import { AppBar, Button, Container, StylesProvider, SvgIcon, Toolbar, Typography } from '@material-ui/core'
 import CreateFormModal from './CreateFormModal';
+import { AmbulanceSvg } from '../helpers/svgIcons/svgIcons';
 
 const AppLayout = ({ children }) => {
   const [open, setOpen] = React.useState(false);
@@ -23,10 +23,10 @@ const AppLayout = ({ children }) => {
             <Button
               variant="contained"
               color="default"
-              startIcon={<CloudUpload />}
+              startIcon={<AmbulanceSvg />}
               onClick={handleClickOpen}
             >
-              Create Request
+              Add Request
             </Button>
           </Toolbar>
         </Container>

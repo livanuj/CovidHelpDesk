@@ -8,8 +8,9 @@ import {
   useTable,
   useRowSelect
 } from 'react-table';
-import { Checkbox, TableContainer } from '@material-ui/core';
+import { Button, Checkbox, TableContainer } from '@material-ui/core';
 import TableToolbar from './TableToolbar';
+import { LocalHospital } from '@material-ui/icons';
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
@@ -32,7 +33,7 @@ const IndeterminateCheckbox = React.forwardRef(
   }
 )
 
-const Table = ({ columns, data }) => {
+const Table = ({ columns, data, helpRequestHandler }) => {
   const {
     getTableProps,
     headerGroups,
@@ -49,6 +50,7 @@ const Table = ({ columns, data }) => {
         {
           id: 'selection',
           Header: '',
+          width: 50,
           Cell: ({ row }) => (
             <div>
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />
@@ -57,6 +59,21 @@ const Table = ({ columns, data }) => {
 
         },
         ...columns,
+        {
+          id: 'helpButton',
+          Header: '',
+          width: 60,
+          Cell: ({ row }) => {
+            return (
+              <Button
+                onClick={() => helpRequestHandler([row.original])}
+                color="primary"
+                variant="outlined"
+                startIcon={<LocalHospital />}
+              > Help </Button>
+            )
+          }
+        }
       ])
     }
   )
@@ -65,27 +82,28 @@ const Table = ({ columns, data }) => {
     return array.filter((_, i) => indexes.includes(i))
   }
 
-  const deleteUserHandler = event => {
+  const bulkHelpHandler = () => {
     const selectedIds = mapDataIdWithIndex(
       data,
       Object.keys(selectedRowIds).map(x => parseInt(x, 10))
     )
-    console.log(selectedIds)
-    alert(selectedIds.map((item) => item.id))
+    helpRequestHandler(selectedIds)
   }
 
   return (
     <TableContainer>
       <TableToolbar
         numSelected={Object.keys(selectedRowIds).length}
-        deleteUserHandler={deleteUserHandler}
+        bulkHelpHandler={bulkHelpHandler}
       />
       <MaUTable {...getTableProps()}>
         <TableHead>
           {headerGroups.map(headerGroup => (
             <TableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
-                <TableCell {...column.getHeaderProps()}>
+                <TableCell width={column.width} {...column.getHeaderProps({
+                  style: {textAlign: 'center'}
+                 })}>
                   {column.render('Header')}
                 </TableCell>
               ))}
@@ -99,7 +117,7 @@ const Table = ({ columns, data }) => {
               <TableRow {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   return (
-                    <TableCell {...cell.getCellProps()}>
+                    <TableCell {...cell.getCellProps()} style={{textAlign: 'center'}}>
                       {cell.render('Cell')}
                     </TableCell>
                   )

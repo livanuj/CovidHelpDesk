@@ -37,40 +37,41 @@ const Request = () => {
   const columns = useMemo(
     () => [
       {
-        Header: 'Id',
-        accessor: 'id'
-      },
-      {
         Header: 'Name',
-        accessor: 'name'
+        accessor: 'name',
+        width: 100
       },
       {
         Header: 'Request Type',
-        accessor: 'requestType'
+        accessor: 'requestType',
+        width: 100
       },
       {
         Header: 'Urgency',
-        accessor: 'urgency'
+        accessor: 'urgency',
+        width: 100
       },
       {
         Header: 'Address',
-        accessor: 'address'
+        accessor: 'address',
+        width: 200,
       },
       {
-        Header: 'Requirements',
-        accessor: 'noOfRequirements'
-      },
-      {
-        Header: '',
-        accessor: 'offerBtn'
+        Header: 'Req',
+        accessor: 'noOfRequirements',
+        width: 50,
       }
     ],
     []
   )
+
+  const helpRequestHandler = selectedIds => {
+    alert(selectedIds.map((item) => item.id))
+  }
   
-    const handleTabChange = newValue => {
-      setCurrentTab(newValue)
-    }
+  const handleTabChange = newValue => {
+    setCurrentTab(newValue)
+  }
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -84,7 +85,11 @@ const Request = () => {
           value={currentTab}
           handleTabChange={handleTabChange}
         />
-        <Table columns={columns} data={requestList} />
+        <Table
+          columns={columns}
+          data={requestList}
+          helpRequestHandler={helpRequestHandler}
+        />
       </Container>
     </AppLayout>
   )
