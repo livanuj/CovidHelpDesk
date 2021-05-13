@@ -1,21 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
-  FormControl,
   FormHelperText,
-  Grid,
-  InputLabel,
-  makeStyles,
-  MenuItem,
-  Select,
-  TextField
+  Grid
 } from '@material-ui/core';
 import CustomTextField from './CustomTextField';
 import CustomSelectPicker from './CustomSelectPicker';
+import { useMutation, useQueryClient } from 'react-query';
+import { postFetch } from '../helpers/fetchApi';
+import { toast } from 'react-toastify';
 
 const requestForOptions = [
   { name: 'Bed', value: 'bed' },
@@ -49,10 +46,34 @@ const initialState = {
   additionalInfo: ''
 }
 
+const createRequest = async (body) => {
+  let request = {
+    url: '/api/v1/requests',
+    headers: { 'Content-Type': 'application/json' },
+    body,
+  }
+  const { response, error } = await postFetch(request)
+  if (error) {
+    throw new Error(error)
+  }
+  return response.body
+}
+
 const CreateFormModal = props => {
+  const queryClient = useQueryClient();
   const [formState, setFormState] = useState(initialState);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
 
+  const { mutateAsync } = useMutation(
+    () => createRequest({ request: formState }), {
+      onSuccess: (res) => {
+        queryClient.invalidateQueries('requests')
+        toast.success(res.message)
+      },
+      onError: (err) => {
+        toast.error(err.message)
+      }
+    });
 
   const invalidPhoneNumber = phone => {
     const regex = /^\+?(?:977)?[ -]?(?:(?:(?:98|97)-?\d{8})|(?:01-?\d{7}))$/
@@ -64,7 +85,8 @@ const CreateFormModal = props => {
     if (invalidPhoneNumber(formState.phone)) {
       setIsPhoneValid(false)
     } else {
-      console.log(formState)
+      props.handleClose()
+      mutateAsync()
     }
   };
 

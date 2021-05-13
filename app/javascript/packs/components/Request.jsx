@@ -6,6 +6,21 @@ import AppLayout from './AppLayout'
 import RequestTabs from './RequestTabs'
 import Table from './Table'
 
+const fetchRequests = async (requestType) => {
+  let request = {
+    url: '/api/v1/requests',
+    headers: { 'Content-Type': 'application/json' },
+    body: { requestType },
+  }
+
+  const { response, error } = await getFetch(request)
+  if (error) {
+    throw new Error(error)
+  }
+  return response.body.data
+}
+
+
 const Request = () => {
   const [currentTab, setCurrentTab] = useState('all')
 
@@ -13,23 +28,7 @@ const Request = () => {
     data: requestList,
     refetch,
     isLoading
-  } = useQuery('requests', () => fetchRequests())
-  const fetchRequests = async () => {
-    let url = '/api/v1/requests'
-    let headers = {
-      'Content-Type': 'application/json'
-    }
-    let request = {
-      url,
-      headers,
-      body: {
-        requestType: currentTab
-      }
-    }
-
-    const { response, error } = await getFetch(request)
-    return response.body.data
-  }
+  } = useQuery('requests', () => fetchRequests(currentTab))
 
   useEffect(() => {
     refetch()

@@ -16,7 +16,6 @@ export const postFetch = async (request) => {
   if (status === 200) {
     const resJSON = {
       status,
-      headers: responseHeaders,
       body: convertKeysToCamelCase(responseBody)
     }
     return { response: resJSON };

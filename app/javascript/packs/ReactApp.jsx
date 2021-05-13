@@ -7,6 +7,8 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from "react-query/devtools"
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css';
 
 import Request from './components/Request'
 
@@ -16,6 +18,12 @@ const ReactApp = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <Request />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={true}
+        closeOnClick
+      />
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
