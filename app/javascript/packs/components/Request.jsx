@@ -28,7 +28,6 @@ const Request = () => {
     }
 
     const { response, error } = await getFetch(request)
-    console.log(response)
     return response.body.data
   }
 
@@ -77,8 +76,6 @@ const Request = () => {
   if (isLoading) {
     return <div>Loading...</div>
   }
-
-  console.log(requestList)
 
   return (
     <AppLayout>

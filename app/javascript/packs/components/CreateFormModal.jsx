@@ -14,6 +14,8 @@ import {
   Select,
   TextField
 } from '@material-ui/core';
+import CustomTextField from './CustomTextField';
+import CustomSelectPicker from './CustomSelectPicker';
 
 const requestForOptions = [
   { name: 'Bed', value: 'bed' },
@@ -43,21 +45,27 @@ const initialState = {
   phone: '',
   gender: '',
   urgency: '',
-  noOfRequirement: 0,
+  noOfRequirements: 1,
   additionalInfo: ''
 }
 
 const CreateFormModal = props => {
-  const classes = useStyles();
   const [formState, setFormState] = useState(initialState);
+  const [isPhoneValid, setIsPhoneValid] = useState(true);
 
-  useEffect(() => {
-    console.log('***Mounted***')
-    return console.log("****Unmounted****")
-  }, [])
+
+  const invalidPhoneNumber = phone => {
+    const regex = /^\+?(?:977)?[ -]?(?:(?:(?:98|97)-?\d{8})|(?:01-?\d{7}))$/
+    return phone.match(regex) === null
+  }
 
   const handleSubmit = (event) => {
-
+    event.preventDefault()
+    if (invalidPhoneNumber(formState.phone)) {
+      setIsPhoneValid(false)
+    } else {
+      console.log(formState)
+    }
   };
 
   const handleSelectPickerChange = (event) => {
@@ -68,44 +76,12 @@ const CreateFormModal = props => {
   };
 
   const handleTextChange = (event) => {
-    // event.preventDefault();
     const { name, value } = event.target;
+    if (name === 'phone' && !isPhoneValid && !invalidPhoneNumber(value)) {
+      setIsPhoneValid(true)
+    }
     setFormState(formState => ({...formState, [name]: value }))
   }
-
-  const CustomTextField = element => {
-    const { required, name, label, defaultValue, type } = element
-    return (
-      <TextField
-        type={type}
-        required={required}
-        id={name}
-        name={name}
-        label={label}
-        onChange={handleTextChange}
-        fullWidth
-        value={defaultValue}
-      />
-    )
-  }
-
-  const CustomSelectPicker = element => {
-    const { menuItems, defaultValue, name, fullWidth, label } = element
-    return (
-      <FormControl className={classes.formControl} style={fullWidth ? {width: '100%'} : {}}>
-        <InputLabel>{label}</InputLabel>
-        <Select
-          name={name}
-          onChange={handleSelectPickerChange}
-          value={defaultValue}
-        >
-        {menuItems.map(({name, value}) => <MenuItem key={value} value={value}>{name}</MenuItem>)}
-        </Select>
-        <FormHelperText>Select what you are looking for</FormHelperText>
-      </FormControl>
-    )
-  }
-  console.log(formState)
 
   const renderForm = () => {
     return (
@@ -117,19 +93,52 @@ const CreateFormModal = props => {
               menuItems={requestForOptions}
               name='requestType'
               defaultValue={formState.requestType}
+              handleSelectPickerChange={handleSelectPickerChange}
+              helperText='Select what you are looking for'
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CustomTextField type='text' required name="name" label="Name" defaultValue={formState.name} />
+            <CustomTextField
+              type='text'
+              required
+              name="name"
+              label="Name"
+              defaultValue={formState.name}
+              handleTextChange={handleTextChange}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CustomTextField type='text' required name="age" label="Age" defaultValue={formState.age} />
+            <CustomTextField
+              type='number'
+              required
+              name="age"
+              label="Age"
+              defaultValue={formState.age}
+              handleTextChange={handleTextChange}
+            />
           </Grid>
           <Grid item xs={12}>
-            <CustomTextField type='text' required name="address" label="Address" defaultValue={formState.address} />
+            <CustomTextField
+              type='text'
+              required
+              name="address"
+              label="Address"
+              defaultValue={formState.address}
+              handleTextChange={handleTextChange}
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CustomTextField type='text' required name="phone" label="Phone No." defaultValue={formState.phone} />
+            <CustomTextField
+              type='number'
+              required
+              name="phone"
+              label="Phone No."
+              defaultValue={formState.phone}
+              handleTextChange={handleTextChange}
+              error={!isPhoneValid}
+              helperText='Invalid phone number'
+            />
+            <FormHelperText>9841******</FormHelperText>
           </Grid>
           <Grid item xs={12} sm={6}>
             <CustomSelectPicker
@@ -138,6 +147,7 @@ const CreateFormModal = props => {
               name='gender'
               fullWidth={true}
               defaultValue={formState.gender}
+              handleSelectPickerChange={handleSelectPickerChange}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -147,13 +157,28 @@ const CreateFormModal = props => {
               name='urgency'
               fullWidth={true}
               defaultValue={formState.urgency}
+              handleSelectPickerChange={handleSelectPickerChange}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
-            <CustomTextField type='number' required name="noOfRequirements" label="No. of Requirements" defaultValue={formState.noOfRequirement} />
+            <CustomTextField
+              type='number'
+              required
+              name="noOfRequirements"
+              label="No. of Requirements"
+              defaultValue={formState.noOfRequirements}
+              handleTextChange={handleTextChange}
+            />
           </Grid>
           <Grid item xs={12}>
-            <CustomTextField type='text' name="additionalInfo" label="Additional Information(Optional)" defaultValue={formState.additionalInfo} />
+            <CustomTextField
+              type='text'
+              name="additionalInfo"
+              label="Additional Information(Optional)"
+              defaultValue={formState.additionalInfo}
+              handleTextChange={handleTextChange}
+              multiline
+            />
           </Grid>
         </Grid>
       </>
@@ -183,11 +208,5 @@ const CreateFormModal = props => {
     </Dialog>
   )
 }
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    minWidth: 240,
-  },
-}));
 
 export default CreateFormModal;
