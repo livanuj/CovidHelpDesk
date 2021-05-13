@@ -82,8 +82,9 @@ const Request = () => {
 
   return (
     <AppLayout>
-      <Container style={styles.container}>
+      <Container maxWidth="lg" style={styles.container}>
         <RequestTabs
+          style={styles.requestTabs}
           value={currentTab}
           handleTabChange={handleTabChange}
         />
@@ -98,6 +99,10 @@ const styles = {
     width: 'inherit',
     marginTop: 80,
     minHeight: '100vh',
+    display: 'flex'
+  },
+  requestTabs: {
+    position: 'fixed'
   }
 }
 

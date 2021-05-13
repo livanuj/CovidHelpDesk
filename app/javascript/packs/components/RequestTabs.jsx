@@ -8,28 +8,27 @@ import React from 'react';
 
 const RequestTabs = props => {
   const classes = useStyles();
-  // const [value, setValue] = React.useState('all');
 
   const handleChange = (event, newValue) => {
-    // setValue(newValue);
     props.handleTabChange(newValue)
   };
 
   return (
     <Paper className={classes.root}>
       <Tabs
+        className={classes.tabs}
+        orientation="vertical"
         value={props.value}
         onChange={handleChange}
         indicatorColor="primary"
         textColor="primary"
-        centered
       >
-        <Tab value='all' label="All" />
-        <Tab value='bed' label="Bed" />
-        <Tab value='oxygen' label="Oxygen" />
-        <Tab value='ventilator' label="Ventilator" />
-        <Tab value='pcr' label="PCR" />
-        <Tab value='doctor' label="Doctor At home" />
+        <Tab wrapped value='all' label="All Requests" />
+        <Tab wrapped value='bed' label="Bed" />
+        <Tab wrapped value='oxygen' label="Oxygen" />
+        <Tab wrapped value='ventilator' label="Ventilator" />
+        <Tab wrapped value='pcr' label="PCR" />
+        <Tab wrapped value='doctor' label="Doctor At home" />
       </Tabs>
     </Paper>
   )
@@ -37,8 +36,15 @@ const RequestTabs = props => {
 
 const useStyles = makeStyles({
   root: {
-    flexGrow: 1,
+    flexShrink: 0,
+    width: 200
   },
+  tabs: {
+    height: '100%',
+    position: 'fixed',
+    zIndex: 1200,
+    width: 200
+  }
 });
 
 export default RequestTabs;
