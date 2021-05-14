@@ -49,8 +49,8 @@ const Table = ({ columns, data, helpRequestHandler }) => {
       hooks.visibleColumns.push(columns => [
         {
           id: 'selection',
-          Header: '',
-          width: 50,
+          Header: 'Multi Select',
+          width: 20,
           Cell: ({ row }) => (
             <div>
               <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />

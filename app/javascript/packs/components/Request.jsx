@@ -1,15 +1,16 @@
 import { Container, CssBaseline } from '@material-ui/core'
+import moment from 'moment'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useQuery } from 'react-query'
 import { getFetch } from '../helpers/fetchApi'
 import AppLayout from './AppLayout'
+import OfferHelpModal from './OfferHelpModal'
 import RequestTabs from './RequestTabs'
 import Table from './Table'
 
 const fetchRequests = async (requestType) => {
   let request = {
     url: '/api/v1/requests',
-    headers: { 'Content-Type': 'application/json' },
     body: { requestType },
   }
 
@@ -20,9 +21,10 @@ const fetchRequests = async (requestType) => {
   return response.body.data
 }
 
-
 const Request = () => {
+  const [helpModalOpen, setHelpModalOpen] = useState(false)
   const [currentTab, setCurrentTab] = useState('all')
+  const [selectedItems, setSelectedItems] = useState([])
 
   const {
     data: requestList,
@@ -37,36 +39,54 @@ const Request = () => {
   const columns = useMemo(
     () => [
       {
-        Header: 'Name',
-        accessor: 'name',
-        width: 100
+        Header: 'Urgency',
+        accessor: 'urgency',
+        width: 50
       },
       {
         Header: 'Request Type',
         accessor: 'requestType',
-        width: 100
+        width: 50
       },
       {
-        Header: 'Urgency',
-        accessor: 'urgency',
-        width: 100
+        Header: 'Name',
+        accessor: 'name',
+        width: 300
       },
       {
         Header: 'Address',
         accessor: 'address',
-        width: 200,
+        width: 400,
       },
       {
         Header: 'Req',
         accessor: 'noOfRequirements',
         width: 50,
+      },
+      {
+        Header: 'Date',
+        accessor: d => {
+          return moment(d.createdAt)
+            .local()
+            .format("MMM d, yyyy")
+        },
+        width: 100,
       }
     ],
     []
   )
 
-  const helpRequestHandler = selectedIds => {
-    alert(selectedIds.map((item) => item.id))
+  const handleClickOpen = () => {
+    setHelpModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setHelpModalOpen(false);
+  };
+
+  const helpRequestHandler = items => {
+    setSelectedItems(items)
+    handleClickOpen()
   }
   
   const handleTabChange = newValue => {
@@ -91,6 +111,14 @@ const Request = () => {
           helpRequestHandler={helpRequestHandler}
         />
       </Container>
+      {
+        helpModalOpen ?
+          <OfferHelpModal
+            selectedItems={selectedItems}
+            open={helpModalOpen}
+            handleClose={handleClose}
+          /> : null
+      }
     </AppLayout>
   )
 }

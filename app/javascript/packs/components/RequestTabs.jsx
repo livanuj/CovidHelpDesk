@@ -6,7 +6,7 @@ import {
 } from '@material-ui/core';
 import { LocalHotel } from '@material-ui/icons';
 import React from 'react';
-import { OxygenSvg, PcrSvg, VentilatorSvg, DoctorHomeSvg } from '../helpers/svgIcons/svgIcons';
+import { OxygenSvg, PcrSvg, VentilatorSvg, DoctorHomeSvg, AllRequestIcon } from '../helpers/svgIcons/svgIcons';
 
 const RequestTabs = props => {
   const classes = useStyles();
@@ -25,12 +25,12 @@ const RequestTabs = props => {
         indicatorColor="primary"
         textColor="primary"
       >
-        <Tab wrapped value='all' label="All Requests" />
-        <Tab wrapped value='bed' label="Bed" icon={<LocalHotel />} />
-        <Tab wrapped value='oxygen' label="Oxygen" icon={<OxygenSvg />} />
-        <Tab wrapped value='ventilator' label="Ventilator" icon={<VentilatorSvg />} />
-        <Tab wrapped value='pcr' label="PCR" icon={<PcrSvg />} />
-        <Tab wrapped value='doctor' label="Doctor" icon={<DoctorHomeSvg />} />
+        <Tab value='all' label="All Request" icon={<AllRequestIcon />} />
+        <Tab value='Bed' label="Bed" icon={<LocalHotel />} />
+        <Tab value='Oxygen' label="Oxygen" icon={<OxygenSvg />} />
+        <Tab value='Ventilator' label="Ventilator" icon={<VentilatorSvg />} />
+        <Tab value='PCR' label="PCR" icon={<PcrSvg />} />
+        <Tab value='Doctor' label="Doctor" icon={<DoctorHomeSvg />} />
       </Tabs>
     </Paper>
   )
@@ -48,8 +48,9 @@ const useStyles = makeStyles({
     width: 200,
     "& .MuiTab-wrapper": {
       flexDirection: "row",
+      justifyContent: 'flex-start',
       "& .MuiSvgIcon-root": {
-        paddingRight: 5
+        paddingRight: 20
       }
     }
   },

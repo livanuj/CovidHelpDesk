@@ -50,7 +50,7 @@ const TableToolbar = props => {
         </Typography>
       ) : (
         <Typography className={classes.title} variant="h6" id="tableTitle">
-          Requests
+          
         </Typography>
       )}
 

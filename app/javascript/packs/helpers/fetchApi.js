@@ -2,12 +2,11 @@ import { convertKeysToCamelCase, convertKeysToSnakeCase } from "./stringConversi
 
 export const postFetch = async (request) => {
   let { url, body } = request;
-  let requestHeaders = request.headers || {}
-  requestHeaders["Content-Type"] = "application/json";
+  let headers = { 'Content-Type': 'application/json' }
 
   const response = await fetch(url, {
     method: 'POST',
-    headers: requestHeaders,
+    headers,
     body: JSON.stringify(convertKeysToSnakeCase(body))
   })
   const responseBody = await response.json();
@@ -26,8 +25,8 @@ export const postFetch = async (request) => {
 
 
 export const getFetch = async (request) => {
-  let { url, headers } = request;
-  headers["Content-Type"] = "application/json";
+  let url = request.url;
+  let headers = { 'Content-Type': 'application/json' }
 
   const params = new URLSearchParams(
     convertKeysToSnakeCase(request.body)
@@ -36,7 +35,7 @@ export const getFetch = async (request) => {
   url = `${url}?${params}`
   const response = await fetch(url, {
     method: 'GET',
-    headers: headers,
+    headers,
   })
   const responseBody = await response.json();
   const status = await response.status;

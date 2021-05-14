@@ -9,47 +9,21 @@ import {
   Grid
 } from '@material-ui/core';
 import CustomTextField from './CustomTextField';
-import CustomSelectPicker from './CustomSelectPicker';
 import { useMutation, useQueryClient } from 'react-query';
 import { postFetch } from '../helpers/fetchApi';
 import { toast } from 'react-toastify';
 
-const requestForOptions = [
-  { name: 'Bed', value: 'bed' },
-  { name: 'Oxygen', value: 'oxygen' },
-  { name: 'Ventilator', value: 'ventilator' },
-  { name: 'PCR', value: 'pcr' },
-  { name: 'Doctor at Home', value: 'doctor' }
-]
-
-const genderOptions = [
-  { name: 'Male', value: 'male' },
-  { name: 'Female', value: 'female' },
-  { name: 'Other', value: 'other' }
-]
-
-const urgencyOptions = [
-  { name: 'Normal', value: 'normal' },
-  { name: 'Moderate', value: 'moderate' },
-  { name: 'Urgent', value: 'urgent' }
-]
-
 const initialState = {
-  requestType: '',
   name: '',
-  age: '',
   address: '',
   phone: '',
-  gender: '',
-  urgency: '',
-  noOfRequirements: 1,
   additionalInfo: ''
 }
 
-const createRequest = async (body) => {
+const postHelpRequest = async (body) => {
   let request = {
-    url: '/api/v1/requests',
-    body,
+    url: '/api/v1/requests/help_request',
+    body
   }
   const { response, error } = await postFetch(request)
   if (error) {
@@ -58,13 +32,16 @@ const createRequest = async (body) => {
   return response.body
 }
 
-const CreateFormModal = props => {
+const OfferHelpModal = props => {
   const queryClient = useQueryClient();
   const [formState, setFormState] = useState(initialState);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
 
   const { mutateAsync } = useMutation(
-    () => createRequest({ request: formState }), {
+    () => postHelpRequest({
+      helper: formState,
+      requestIds: props.selectedItems.map((item) => item.id)
+    }), {
       onSuccess: (res) => {
         queryClient.invalidateQueries('requests')
         toast.success(res.message)
@@ -72,14 +49,15 @@ const CreateFormModal = props => {
       onError: (err) => {
         toast.error(err.message)
       }
-    });
+    }
+  )
 
   const invalidPhoneNumber = phone => {
     const regex = /^\+?(?:977)?[ -]?(?:(?:(?:98|97)-?\d{8})|(?:01-?\d{7}))$/
     return phone.match(regex) === null
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault()
     if (invalidPhoneNumber(formState.phone)) {
       setIsPhoneValid(false)
@@ -87,14 +65,7 @@ const CreateFormModal = props => {
       props.handleClose()
       mutateAsync()
     }
-  };
-
-  const handleSelectPickerChange = (event) => {
-    setFormState({
-      ...formState,
-      [event.target.name]: event.target.value
-    })
-  };
+  }
 
   const handleTextChange = (event) => {
     const { name, value } = event.target;
@@ -109,16 +80,6 @@ const CreateFormModal = props => {
       <>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <CustomSelectPicker
-              label="Request For"
-              menuItems={requestForOptions}
-              name='requestType'
-              defaultValue={formState.requestType}
-              handleSelectPickerChange={handleSelectPickerChange}
-              helperText='Select what you are looking for'
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
             <CustomTextField
               type='text'
               required
@@ -128,27 +89,7 @@ const CreateFormModal = props => {
               handleTextChange={handleTextChange}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <CustomTextField
-              type='number'
-              required
-              name="age"
-              label="Age"
-              defaultValue={formState.age}
-              handleTextChange={handleTextChange}
-            />
-          </Grid>
           <Grid item xs={12}>
-            <CustomTextField
-              type='text'
-              required
-              name="address"
-              label="Address"
-              defaultValue={formState.address}
-              handleTextChange={handleTextChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
             <CustomTextField
               type='number'
               required
@@ -161,33 +102,13 @@ const CreateFormModal = props => {
             />
             <FormHelperText>9841******</FormHelperText>
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <CustomSelectPicker
-              label="Gender"
-              menuItems={genderOptions}
-              name='gender'
-              fullWidth={true}
-              defaultValue={formState.gender}
-              handleSelectPickerChange={handleSelectPickerChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <CustomSelectPicker
-              label="Urgency"
-              menuItems={urgencyOptions}
-              name='urgency'
-              fullWidth={true}
-              defaultValue={formState.urgency}
-              handleSelectPickerChange={handleSelectPickerChange}
-            />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12}>
             <CustomTextField
-              type='number'
+              type='text'
               required
-              name="noOfRequirements"
-              label="No. of Requirements"
-              defaultValue={formState.noOfRequirements}
+              name="address"
+              label="Address"
+              defaultValue={formState.address}
               handleTextChange={handleTextChange}
             />
           </Grid>
@@ -212,8 +133,8 @@ const CreateFormModal = props => {
       onClose={props.handleClose}
       aria-labelledby="form-dialog-title"
     >
-      <DialogTitle id="form-dialog-title">Request for</DialogTitle>
-      <form name="form" onSubmit={handleSubmit} style={{ width: '100%' }}>
+      <DialogTitle id="form-dialog-title">Offer Help</DialogTitle>
+      <form name="form" onSubmit={handleSubmit}>
         <DialogContent>
           {renderForm()}
         </DialogContent>
@@ -230,4 +151,4 @@ const CreateFormModal = props => {
   )
 }
 
-export default CreateFormModal;
+export default OfferHelpModal;
