@@ -25,12 +25,12 @@ const RequestTabs = props => {
         indicatorColor="primary"
         textColor="primary"
       >
-        <Tab value='all' label="All Request" icon={<AllRequestIcon />} />
-        <Tab value='Bed' label="Bed" icon={<LocalHotel />} />
-        <Tab value='Oxygen' label="Oxygen" icon={<OxygenSvg />} />
-        <Tab value='Ventilator' label="Ventilator" icon={<VentilatorSvg />} />
-        <Tab value='PCR' label="PCR" icon={<PcrSvg />} />
-        <Tab value='Doctor' label="Doctor" icon={<DoctorHomeSvg />} />
+        <Tab className={classes.tab} value='all' label="All Request" icon={<AllRequestIcon />} />
+        <Tab className={classes.tab} value='Bed' label="Bed" icon={<LocalHotel />} />
+        <Tab className={classes.tab} value='Oxygen' label="Oxygen" icon={<OxygenSvg />} />
+        <Tab className={classes.tab} value='Ventilator' label="Ventilator" icon={<VentilatorSvg />} />
+        <Tab className={classes.tab} value='PCR' label="PCR" icon={<PcrSvg />} />
+        <Tab className={classes.tab} value='Doctor' label="Doctor" icon={<DoctorHomeSvg />} />
       </Tabs>
     </Paper>
   )
@@ -39,7 +39,7 @@ const RequestTabs = props => {
 const useStyles = makeStyles({
   root: {
     flexShrink: 0,
-    width: 200
+    width: 200,
   },
   tabs: {
     height: '100%',
@@ -54,6 +54,9 @@ const useStyles = makeStyles({
       }
     }
   },
+  tab: {
+    fontSize: '0.8rem',
+  }
 });
 
 export default RequestTabs;
