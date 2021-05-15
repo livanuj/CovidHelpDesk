@@ -41,22 +41,22 @@ const Request = () => {
       {
         Header: 'Urgency',
         accessor: 'urgency',
-        width: 50
+        width: 120
       },
       {
         Header: 'Request Type',
         accessor: 'requestType',
-        width: 50
+        width: 100
       },
       {
         Header: 'Name',
         accessor: 'name',
-        width: 300
+        width: 250
       },
       {
         Header: 'Address',
         accessor: 'address',
-        width: 400,
+        width: 250,
       },
       {
         Header: 'Req',
