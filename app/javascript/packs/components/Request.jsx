@@ -6,7 +6,7 @@ import { getFetch } from '../helpers/fetchApi'
 import AppLayout from './AppLayout'
 import OfferHelpModal from './OfferHelpModal'
 import RequestTabs from './RequestTabs'
-import Table from './Table'
+import Table from './table/Table'
 
 const fetchRequests = async (requestType) => {
   let request = {

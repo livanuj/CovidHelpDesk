@@ -15,11 +15,11 @@ import { postFetch } from '../helpers/fetchApi';
 import { toast } from 'react-toastify';
 
 const requestForOptions = [
-  { name: 'Bed', value: 'bed' },
-  { name: 'Oxygen', value: 'oxygen' },
-  { name: 'Ventilator', value: 'ventilator' },
-  { name: 'PCR', value: 'pcr' },
-  { name: 'Doctor at Home', value: 'doctor' }
+  { name: 'Bed', value: 'Bed' },
+  { name: 'Oxygen', value: 'Oxygen' },
+  { name: 'Ventilator', value: 'Ventilator' },
+  { name: 'PCR', value: 'PCR' },
+  { name: 'Doctor at Home', value: 'Doctor' }
 ]
 
 const genderOptions = [
@@ -29,9 +29,9 @@ const genderOptions = [
 ]
 
 const urgencyOptions = [
-  { name: 'Normal', value: 'normal' },
-  { name: 'Moderate', value: 'moderate' },
-  { name: 'Urgent', value: 'urgent' }
+  { name: 'Normal', value: 'NORMAL' },
+  { name: 'Moderate', value: 'MODERATE' },
+  { name: 'Urgent', value: 'URGENT' }
 ]
 
 const initialState = {

@@ -9,6 +9,8 @@ import Tooltip from '@material-ui/core/Tooltip'
 import { Button } from '@material-ui/core'
 import { LocalHospitalRounded } from '@material-ui/icons'
 
+import GlobalFilter from './GlobalFilter'
+
 const useToolbarStyles = makeStyles(theme => ({
   root: {
     paddingLeft: theme.spacing(2),
@@ -49,9 +51,11 @@ const TableToolbar = props => {
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle">
-          
-        </Typography>
+        <GlobalFilter
+          preGlobalFilteredRows={props.preGlobalFilteredRows}
+          globalFilter={props.globalFilter}
+          setGlobalFilter={props.setGlobalFilter}
+        />
       )}
 
       {numSelected > 0 ? (

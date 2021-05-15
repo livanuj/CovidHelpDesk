@@ -6,7 +6,8 @@ import TableHead from '@material-ui/core/TableHead'
 import TableRow from '@material-ui/core/TableRow'
 import {
   useTable,
-  useRowSelect
+  useRowSelect,
+  useGlobalFilter
 } from 'react-table';
 import { Button, Checkbox, TableContainer } from '@material-ui/core';
 import TableToolbar from './TableToolbar';
@@ -39,12 +40,15 @@ const Table = ({ columns, data, helpRequestHandler }) => {
     headerGroups,
     rows,
     prepareRow,
-    state: { selectedRowIds }
+    preGlobalFilteredRows,
+    setGlobalFilter,
+    state: { selectedRowIds, globalFilter }
   } = useTable({
     columns,
     data,
   },
     useRowSelect,
+    useGlobalFilter,
     hooks => {
       hooks.visibleColumns.push(columns => [
         {
@@ -95,6 +99,9 @@ const Table = ({ columns, data, helpRequestHandler }) => {
       <TableToolbar
         numSelected={Object.keys(selectedRowIds).length}
         bulkHelpHandler={bulkHelpHandler}
+        preGlobalFilteredRows={preGlobalFilteredRows}
+        setGlobalFilter={setGlobalFilter}
+        globalFilter={globalFilter}
       />
       <MaUTable {...getTableProps()}>
         <TableHead>
