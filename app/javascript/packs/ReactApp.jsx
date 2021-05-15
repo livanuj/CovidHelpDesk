@@ -11,12 +11,14 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 
 import Request from './components/Request'
+import { CssBaseline } from '@material-ui/core'
 
 const queryClient = new QueryClient();
 
 const ReactApp = () => {
   return (
     <QueryClientProvider client={queryClient}>
+      <CssBaseline />
       <Request />
       <ToastContainer
         position="top-right"
