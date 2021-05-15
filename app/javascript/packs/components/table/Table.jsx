@@ -109,7 +109,7 @@ const Table = ({ columns, data, helpRequestHandler }) => {
             <TableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map(column => (
                 <TableCell width={column.width} {...column.getHeaderProps({
-                  style: {textAlign: 'center'}
+                  style: { textAlign: 'center', fontSize: '0.8rem' }
                  })}>
                   {column.render('Header')}
                 </TableCell>
@@ -124,7 +124,7 @@ const Table = ({ columns, data, helpRequestHandler }) => {
               <TableRow {...row.getRowProps()}>
                 {row.cells.map(cell => {
                   return (
-                    <TableCell {...cell.getCellProps()} style={{textAlign: 'center'}}>
+                    <TableCell {...cell.getCellProps()} style={{textAlign: 'center', fontSize: '0.8rem' }}>
                       {cell.render('Cell')}
                     </TableCell>
                   )
