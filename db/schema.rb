@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_15_082140) do
+ActiveRecord::Schema.define(version: 2021_05_15_112607) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 2021_05_15_082140) do
     t.text "additional_info"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "status", default: 0
     t.index ["helper_id"], name: "index_offer_requests_on_helper_id"
   end
 
@@ -70,6 +71,7 @@ ActiveRecord::Schema.define(version: 2021_05_15_082140) do
     t.datetime "updated_at", precision: 6, null: false
     t.text "additional_info"
     t.bigint "offer_request_id"
+    t.integer "status", default: 0
   end
 
 end

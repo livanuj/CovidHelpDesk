@@ -4,9 +4,9 @@ class Api::V1::RequestsController < ApplicationController
   def index
     requests =
       if params[:request_type] == 'all'
-        Request.where(offer_request_id: nil)
+        Request.active
       else 
-        Request.where(request_type: params[:request_type], offer_request_id: nil)
+        Request.active.where(request_type: params[:request_type])
       end
 
     render json: {
