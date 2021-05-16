@@ -21,6 +21,7 @@ const AppLayout = ({ children }) => {
           <Toolbar style={styles.toolbar}>
             <Typography variant='h6'> Covid Help </Typography>
             <Button
+              style={{minWidth: 188}}
               variant="contained"
               color="default"
               startIcon={<AmbulanceSvg />}

@@ -60,16 +60,15 @@ const TableToolbar = props => {
       )}
 
       {numSelected > 0 ? (
-        <Tooltip style={{width: 185}}>
-          <Button
-            variant="contained"
-            color="primary"
-            startIcon={<LocalHospitalRounded />}
-            onClick={bulkHelpHandler}
-          >
-            Help Them
-          </Button>
-        </Tooltip>
+        <Button
+          style={{minWidth: 162}}
+          variant="contained"
+          color="primary"
+          startIcon={<LocalHospitalRounded />}
+          onClick={bulkHelpHandler}
+        >
+          Help Them
+        </Button>
       ) : null }
     </Toolbar>
   )
