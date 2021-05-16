@@ -1,7 +1,10 @@
 import React from 'react';
-import { AppBar, Button, Container, StylesProvider, SvgIcon, Toolbar, Typography } from '@material-ui/core'
+import { AppBar, Container, StylesProvider, Toolbar } from '@material-ui/core'
+
 import CreateFormModal from './CreateFormModal';
 import { AmbulanceSvg } from '../helpers/svgIcons/svgIcons';
+import LogoImg from "../../../assets/images/logo.png"
+import { ColorButton } from '../customStyle';
 
 const AppLayout = ({ children }) => {
   const [open, setOpen] = React.useState(false);
@@ -16,19 +19,25 @@ const AppLayout = ({ children }) => {
 
   return (
     <StylesProvider injectFirst>
-      <AppBar>
+      <AppBar color='inherit' style={{zIndex: 999, backgroundColor: '#f4f5ef'}}>
         <Container maxWidth="lg">
           <Toolbar style={styles.toolbar}>
-            <Typography variant='h6'> Covid Help </Typography>
-            <Button
+            <div>
+              <img
+                src={LogoImg}
+                height="60"
+                alt="Covid Care Logo"
+              />
+            </div>
+            <ColorButton
               style={{minWidth: 188}}
               variant="contained"
-              color="default"
+              color="secondary"
               startIcon={<AmbulanceSvg />}
-              onClick={handleClickOpen}
+              onClick={(handleClickOpen)}
             >
               Add Request
-            </Button>
+            </ColorButton>
           </Toolbar>
         </Container>
       </AppBar>

@@ -8,6 +8,7 @@ import {
 } from '@material-ui/core';
 import { LocalHotel } from '@material-ui/icons';
 import React, { useState } from 'react';
+import { AntTabs, AntTab } from '../customStyle';
 import { OxygenSvg, PcrSvg, VentilatorSvg, DoctorHomeSvg, AllRequestIcon } from '../helpers/svgIcons/svgIcons';
 
 const RequestTabs = props => {
@@ -49,21 +50,19 @@ const RequestTabs = props => {
 
   return (
     <SwipableTab>
-      <Tabs
+      <AntTabs
         className={classes.tabs}
         orientation="vertical"
         value={props.value}
         onChange={handleChange}
-        indicatorColor="primary"
-        textColor="primary"
       >
-        <Tab className={classes.tab} value='all' label={tabLabel('All Request')} icon={<AllRequestIcon />} />
-        <Tab className={classes.tab} value='Bed' label={tabLabel('Bed')} icon={<LocalHotel />} />
-        <Tab className={classes.tab} value='Oxygen' label={tabLabel('Oxygen')} icon={<OxygenSvg />} />
-        <Tab className={classes.tab} value='Ventilator' label={tabLabel('Ventilator')} icon={<VentilatorSvg />} />
-        <Tab className={classes.tab} value='PCR' label={tabLabel('PCR')} icon={<PcrSvg />} />
-        <Tab className={classes.tab} value='Doctor' label={tabLabel('Doctor')} icon={<DoctorHomeSvg />} />
-      </Tabs>
+        <AntTab className={classes.tab} value='all' label={tabLabel('All Request')} icon={<AllRequestIcon />} />
+        <AntTab className={classes.tab} value='Bed' label={tabLabel('Bed')} icon={<LocalHotel />} />
+        <AntTab className={classes.tab} value='Oxygen' label={tabLabel('Oxygen')} icon={<OxygenSvg />} />
+        <AntTab className={classes.tab} value='Ventilator' label={tabLabel('Ventilator')} icon={<VentilatorSvg />} />
+        <AntTab className={classes.tab} value='PCR' label={tabLabel('PCR')} icon={<PcrSvg />} />
+        <AntTab className={classes.tab} value='Doctor' label={tabLabel('Doctor')} icon={<DoctorHomeSvg />} />
+      </AntTabs>
     </SwipableTab>
   )
 }
@@ -76,7 +75,7 @@ const useStyles = makeStyles({
   tabs: {
     height: '100%',
     position: 'fixed',
-    zIndex: 1200,
+    zIndex: 100,
     width: 160,
     // "& .MuiTab-wrapper": {
     //   flexDirection: "row",

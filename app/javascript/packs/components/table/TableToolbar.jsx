@@ -5,11 +5,10 @@ import { makeStyles } from '@material-ui/core/styles'
 import PropTypes from 'prop-types'
 import Toolbar from '@material-ui/core/Toolbar'
 import Typography from '@material-ui/core/Typography'
-import Tooltip from '@material-ui/core/Tooltip'
-import { Button } from '@material-ui/core'
 import { LocalHospitalRounded } from '@material-ui/icons'
 
 import GlobalFilter from './GlobalFilter'
+import { OutlinedColorButton } from '../../customStyle'
 
 const useToolbarStyles = makeStyles(theme => ({
   root: {
@@ -20,13 +19,14 @@ const useToolbarStyles = makeStyles(theme => ({
   highlight:
     theme.palette.type === 'light'
       ? {
-          color: theme.palette.primary.main,
+          color: "#c55c51",
         }
       : {
-          color: theme.palette.text.primary,
+          color: "#c55c51",
         },
   title: {
     flex: '1 1 100%',
+    color: "#c55c51"
   },
 }))
 
@@ -60,15 +60,14 @@ const TableToolbar = props => {
       )}
 
       {numSelected > 0 ? (
-        <Button
+        <OutlinedColorButton
           style={{minWidth: 162}}
-          variant="contained"
-          color="primary"
+          variant="outlined"
           startIcon={<LocalHospitalRounded />}
           onClick={bulkHelpHandler}
         >
           Help Them
-        </Button>
+        </OutlinedColorButton>
       ) : null }
     </Toolbar>
   )

@@ -68,7 +68,7 @@ const Request = () => {
         accessor: d => {
           return moment(d.createdAt)
             .local()
-            .format("MMM d, yyyy")
+            .format("ll")
         },
         width: 100,
       }

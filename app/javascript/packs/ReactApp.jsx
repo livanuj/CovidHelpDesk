@@ -7,11 +7,10 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from "react-query/devtools"
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
 
 import Request from './components/Request'
 import { CssBaseline } from '@material-ui/core'
+import { ToastProvider } from 'react-toast-notifications'
 
 const queryClient = new QueryClient();
 
@@ -19,13 +18,9 @@ const ReactApp = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <CssBaseline />
-      <Request />
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={true}
-        closeOnClick
-      />
+      <ToastProvider>
+        <Request />
+      </ToastProvider>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   )
