@@ -8,7 +8,8 @@ import PropTypes from 'prop-types'
 import { QueryClient, QueryClientProvider } from 'react-query'
 import { ReactQueryDevtools } from "react-query/devtools"
 import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css';
+import './toast.css'
+// import 'react-toastify/dist/ReactToastify.css';
 
 import Request from './components/Request'
 import { CssBaseline } from '@material-ui/core'
