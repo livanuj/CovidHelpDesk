@@ -8,10 +8,10 @@ import {
   FormHelperText,
   Grid
 } from '@material-ui/core';
+import { useToasts } from 'react-toast-notifications'
 import CustomTextField from './CustomTextField';
 import { useMutation, useQueryClient } from 'react-query';
 import { postFetch } from '../helpers/fetchApi';
-import { toast } from 'react-toastify';
 
 const initialState = {
   name: '',
@@ -34,6 +34,7 @@ const postHelpRequest = async (body) => {
 
 const OfferHelpModal = props => {
   const queryClient = useQueryClient();
+  const { addToast } = useToasts();
   const [formState, setFormState] = useState(initialState);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
 
@@ -44,11 +45,9 @@ const OfferHelpModal = props => {
     }), {
       onSuccess: (res) => {
         queryClient.invalidateQueries('requests')
-        toast.success(res.message)
+        addToast(res.message, { appearance: 'success', autoDismiss: true })
       },
-      onError: (err) => {
-        toast.error(err.message)
-      }
+      onError: (err) => addToast(err.message, { appearance: 'error', autoDismiss: true })
     }
   )
 

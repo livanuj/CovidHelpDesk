@@ -8,11 +8,12 @@ import {
   FormHelperText,
   Grid
 } from '@material-ui/core';
+import { useMutation, useQueryClient } from 'react-query';
+import { useToasts } from 'react-toast-notifications';
+
 import CustomTextField from './CustomTextField';
 import CustomSelectPicker from './CustomSelectPicker';
-import { useMutation, useQueryClient } from 'react-query';
 import { postFetch } from '../helpers/fetchApi';
-import { toast } from 'react-toastify';
 
 const requestForOptions = [
   { name: 'Bed', value: 'Bed' },
@@ -60,6 +61,7 @@ const createRequest = async (body) => {
 
 const CreateFormModal = props => {
   const queryClient = useQueryClient();
+  const { addToast } = useToasts();
   const [formState, setFormState] = useState(initialState);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
 
@@ -67,11 +69,9 @@ const CreateFormModal = props => {
     () => createRequest({ request: formState }), {
       onSuccess: (res) => {
         queryClient.invalidateQueries('requests')
-        toast.success(res.message)
+        return addToast(res.message, { appearance: 'success', autoDismiss: true, })
       },
-      onError: (err) => {
-        toast.error(err.message)
-      }
+      onError: (err) => addToast(err.message, { appearance: 'error', autoDismiss: true, })
     });
 
   const invalidPhoneNumber = phone => {

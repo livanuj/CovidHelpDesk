@@ -9,12 +9,15 @@ import {
   useRowSelect,
   useGlobalFilter
 } from 'react-table';
-import { Button, Checkbox, TableContainer } from '@material-ui/core';
+import { Checkbox, makeStyles, TableContainer } from '@material-ui/core';
 import TableToolbar from './TableToolbar';
 import { LocalHospital } from '@material-ui/icons';
+import { OutlinedColorButton } from '../../customStyle';
+
 
 const IndeterminateCheckbox = React.forwardRef(
   ({ indeterminate, ...rest }, ref) => {
+    const classes = useStyles()
     const defaultRef = React.useRef()
     const resolvedRef = ref || defaultRef
 
@@ -25,8 +28,9 @@ const IndeterminateCheckbox = React.forwardRef(
     return (
       <>
         <Checkbox
-          color='primary'
+          className={classes.root}
           ref={resolvedRef}
+          color='default'
           {...rest}
         />
       </>
@@ -69,12 +73,11 @@ const Table = ({ columns, data, helpRequestHandler }) => {
           width: 60,
           Cell: ({ row }) => {
             return (
-              <Button
+              <OutlinedColorButton
                 onClick={() => helpRequestHandler([row.original])}
-                color="primary"
                 variant="outlined"
                 startIcon={<LocalHospital />}
-              > Help </Button>
+              > Help </OutlinedColorButton>
             )
           }
         }
@@ -131,11 +134,17 @@ const Table = ({ columns, data, helpRequestHandler }) => {
                 })}
               </TableRow>
             )
-          }) : "No Data to Show"}
+          }) : <tr><td><div style={{width: 150}}>No Data to Show</div></td></tr>}
         </TableBody>
       </MaUTable>
     </TableContainer>
   )
 }
+
+const useStyles = makeStyles({
+  root: {
+    color: '#c55c51',
+  },
+})
 
 export default Table;
