@@ -1,12 +1,12 @@
 import {
   makeStyles,
   Paper,
-  Tabs,
-  Tab,
   useMediaQuery,
-  SwipeableDrawer,
+  IconButton,
+  Drawer,
 } from '@material-ui/core';
 import { LocalHotel } from '@material-ui/icons';
+import MenuIcon from '@material-ui/icons/Menu';
 import React, { useState } from 'react';
 import { AntTabs, AntTab } from '../customStyle';
 import { OxygenSvg, PcrSvg, VentilatorSvg, DoctorHomeSvg, AllRequestIcon } from '../helpers/svgIcons/svgIcons';
@@ -21,7 +21,7 @@ const RequestTabs = props => {
   };
 
   const toggleDrawer = open => (event) => {
-    if (event && event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
       return;
     }
 
@@ -35,35 +35,50 @@ const RequestTabs = props => {
   const SwipableTab = ({ children }) => {
     if (mobile) {
       return (
-        <SwipeableDrawer
+        <Drawer
           anchor='left'
           open={tabOpen}
           onClose={toggleDrawer(false)}
           onOpen={toggleDrawer(true)}
         >
           <Paper className={classes.root}>{children}</Paper>
-        </SwipeableDrawer>)
+        </Drawer>)
     } else {
       return <Paper className={classes.root}>{children}</Paper>
     }
   }
 
   return (
-    <SwipableTab>
-      <AntTabs
-        className={classes.tabs}
-        orientation="vertical"
-        value={props.value}
-        onChange={handleChange}
-      >
-        <AntTab className={classes.tab} value='all' label={tabLabel('All Request')} icon={<AllRequestIcon />} />
-        <AntTab className={classes.tab} value='Bed' label={tabLabel('Bed')} icon={<LocalHotel />} />
-        <AntTab className={classes.tab} value='Oxygen' label={tabLabel('Oxygen')} icon={<OxygenSvg />} />
-        <AntTab className={classes.tab} value='Ventilator' label={tabLabel('Ventilator')} icon={<VentilatorSvg />} />
-        <AntTab className={classes.tab} value='PCR' label={tabLabel('PCR')} icon={<PcrSvg />} />
-        <AntTab className={classes.tab} value='Doctor' label={tabLabel('Doctor')} icon={<DoctorHomeSvg />} />
-      </AntTabs>
-    </SwipableTab>
+    <>
+      {
+        mobile ? 
+          <IconButton
+            style={{position: 'fixed', zIndex: 110}}
+            color="inherit"
+            aria-label="open drawer"
+            onClick={toggleDrawer(true)}
+            edge="start"
+          >
+            <MenuIcon />
+          </IconButton>
+        : null
+      }
+      <SwipableTab>
+        <AntTabs
+          className={classes.tabs}
+          orientation="vertical"
+          value={props.value}
+          onChange={handleChange}
+        >
+          <AntTab className={classes.tab} value='all' label={tabLabel('All Request')} icon={<AllRequestIcon />} />
+          <AntTab className={classes.tab} value='Bed' label={tabLabel('Bed')} icon={<LocalHotel />} />
+          <AntTab className={classes.tab} value='Oxygen' label={tabLabel('Oxygen')} icon={<OxygenSvg />} />
+          <AntTab className={classes.tab} value='Ventilator' label={tabLabel('Ventilator')} icon={<VentilatorSvg />} />
+          <AntTab className={classes.tab} value='PCR' label={tabLabel('PCR')} icon={<PcrSvg />} />
+          <AntTab className={classes.tab} value='Doctor' label={tabLabel('Doctor')} icon={<DoctorHomeSvg />} />
+        </AntTabs>
+      </SwipableTab>
+    </>
   )
 }
 

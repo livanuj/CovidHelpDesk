@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,6 +11,7 @@ import { useToasts } from 'react-toast-notifications'
 import CustomTextField from './CustomTextField';
 import { useMutation, useQueryClient } from 'react-query';
 import { postFetch } from '../helpers/fetchApi';
+import { ColorButton, OutlinedColorButton } from '../customStyle';
 
 const initialState = {
   name: '',
@@ -138,12 +138,12 @@ const OfferHelpModal = props => {
           {renderForm()}
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClose} color="primary">
+          <OutlinedColorButton onClick={props.handleClose}>
             Cancel
-          </Button>
-          <Button type='submit' color="primary" variant="contained">
+          </OutlinedColorButton>
+          <ColorButton type='submit' variant="contained">
             Submit
-          </Button>
+          </ColorButton>
         </DialogActions>
       </form>
     </Dialog>

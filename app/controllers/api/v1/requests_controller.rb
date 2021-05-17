@@ -21,7 +21,7 @@ class Api::V1::RequestsController < ApplicationController
     if new_request.save
       status = 200
       success = true
-      message = "Request Registered Successfully!"
+      message = "Request Registered Successfully and is added to the Queue."
     else
       status = 422
       success = false
@@ -35,18 +35,27 @@ class Api::V1::RequestsController < ApplicationController
   end
 
   def help_request
-    if associate_help_requests
-      render json: {
-        success: true,
-        message: 'Help Offer Registered Successfully'
-      }
+    @offer_request = OfferRequest.new(offer_request_params)
+    @helper = Helper.find_or_initialize_by(phone: helper_params[:phone])
+
+    if has_duplicate_offer_request?
+      success = false
+      status  = 422
+      message = 'You already have help offer waiting for approval for this request.'
+    elsif associate_help_requests
+      success = true
+      status  = 200
+      message = 'Help Offer Registered Successfully'
     else
-      render json: {
-        success: false,
-        message: 'Error Reginstering Help Offer'
-      }
+      success = false
+      status  = 422
+      message = 'Error Reginstering Help Offer'
     end
 
+    render json: {
+      success: success,
+      message: message
+    }, status: status
   end
 
   private
@@ -67,14 +76,26 @@ class Api::V1::RequestsController < ApplicationController
     Request.where(id: params[:request_ids])
   end
 
-  def associate_help_requests
-    offer_request = OfferRequest.new(additional_info: offer_request_params)
-    helper = Helper.find_or_initialize_by(phone: helper_params[:phone])
+  def has_duplicate_offer_request?
+    return false unless @helper.persisted? 
 
-    if helper.update(helper_params)
-      offer_request.helper_id = helper.id
-      offer_request.requests << help_requests
-      offer_request.save
+    @helper.offer_requests.pending.select do |offer_request|
+      offer_request.requests.ids.sort == help_requests.ids.sort
+    end.present?
+  end
+
+  def associate_help_requests
+    # offer_request = OfferRequest.new(additional_info: offer_request_params)
+    # helper = Helper.find_or_initialize_by(phone: helper_params[:phone])
+
+    # if helper.persisted? && helper.requests.ids.sort == help_requests.ids.sort
+    #   return false
+    # end
+
+    if @helper.update(helper_params)
+      @offer_request.helper_id = @helper.id
+      @offer_request.requests << help_requests
+      @offer_request.save
     end
   end
 end
