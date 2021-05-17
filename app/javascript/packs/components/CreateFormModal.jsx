@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -14,6 +13,7 @@ import { useToasts } from 'react-toast-notifications';
 import CustomTextField from './CustomTextField';
 import CustomSelectPicker from './CustomSelectPicker';
 import { postFetch } from '../helpers/fetchApi';
+import { ColorButton, OutlinedColorButton } from '../customStyle';
 
 const requestForOptions = [
   { name: 'Bed', value: 'Bed' },
@@ -218,12 +218,12 @@ const CreateFormModal = props => {
           {renderForm()}
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.handleClose} color="primary">
+          <OutlinedColorButton onClick={props.handleClose} color="default">
             Cancel
-          </Button>
-          <Button type='submit' color="primary" variant="contained">
+          </OutlinedColorButton>
+          <ColorButton type="submit" variant="contained">
             Submit
-          </Button>
+          </ColorButton>
         </DialogActions>
       </form>
     </Dialog>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { AppBar, Container, StylesProvider, Toolbar } from '@material-ui/core'
+import { AppBar, Container, StylesProvider, Toolbar, useMediaQuery } from '@material-ui/core'
 
 import CreateFormModal from './CreateFormModal';
 import { AmbulanceSvg } from '../helpers/svgIcons/svgIcons';
@@ -7,6 +7,7 @@ import LogoImg from "../../../assets/images/logo.png"
 import { ColorButton } from '../customStyle';
 
 const AppLayout = ({ children }) => {
+  const mobile = useMediaQuery('(max-width: 600px)')
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -30,13 +31,12 @@ const AppLayout = ({ children }) => {
               />
             </div>
             <ColorButton
-              style={{minWidth: 188}}
+              style={{minWidth: mobile ? 100 : 188, borderRadius: 25}}
               variant="contained"
-              color="secondary"
               startIcon={<AmbulanceSvg />}
               onClick={(handleClickOpen)}
             >
-              Add Request
+              {mobile ? 'Add' : 'Add Request'}
             </ColorButton>
           </Toolbar>
         </Container>

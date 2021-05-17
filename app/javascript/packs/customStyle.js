@@ -2,6 +2,8 @@ import { Button, Checkbox, Tab, Tabs, withStyles } from "@material-ui/core";
 
 export const ColorButton = withStyles((theme) => ({
   root: {
+    fontSize: 14,
+    padding: 8,
     color: '#f4f5ef',
     backgroundColor: '#c55c51',
     '&:hover': {

@@ -12,7 +12,7 @@ import { OutlinedColorButton } from '../../customStyle'
 
 const useToolbarStyles = makeStyles(theme => ({
   root: {
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(1),
     minHeight: 45
   },
