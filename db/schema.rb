@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_15_112607) do
+ActiveRecord::Schema.define(version: 2021_05_22_100513) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,8 @@ ActiveRecord::Schema.define(version: 2021_05_15_112607) do
     t.text "additional_info"
     t.bigint "offer_request_id"
     t.integer "status", default: 0
+    t.integer "ward_no"
+    t.text "pre_existing_diseases"
   end
 
 end

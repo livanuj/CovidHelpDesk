@@ -81,6 +81,7 @@ const Request = () => {
   };
 
   const handleClose = () => {
+    setSelectedItems([])
     setHelpModalOpen(false);
   };
 

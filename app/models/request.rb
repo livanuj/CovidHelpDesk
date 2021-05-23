@@ -15,7 +15,9 @@ class Request < ApplicationRecord
   default_scope { order(created_at: :asc) }
 
   def as_json(options={})
-    super(:only => [:id, :request_type, :urgency, :address, :name, :no_of_requirements, :created_at])
+    super({
+      only: [:id, :request_type, :urgency, :address, :name, :no_of_requirements, :created_at]
+    }.merge(options))
   end
 
 end

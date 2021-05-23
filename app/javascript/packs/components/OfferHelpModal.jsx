@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -12,6 +13,8 @@ import CustomTextField from './CustomTextField';
 import { useMutation, useQueryClient } from 'react-query';
 import { postFetch } from '../helpers/fetchApi';
 import { ColorButton, OutlinedColorButton } from '../customStyle';
+import DisclaimerModal from './DisclaimerModal';
+import RequestInfoModal from './RequestInfoModal';
 
 const initialState = {
   name: '',
@@ -37,6 +40,10 @@ const OfferHelpModal = props => {
   const { addToast } = useToasts();
   const [formState, setFormState] = useState(initialState);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
+  const [requestDetail, setRequestDetail] = useState([]);
+  const [disclaimerAccepted, setDisclaimerAccepted] = useState(false)
+  const [openDisclaimer, setOpenDisclaimer] = useState(false);
+  const [openRequestDetail, setOpenRequestDetail] = useState(false)
 
   const { mutateAsync } = useMutation(
     () => postHelpRequest({
@@ -45,6 +52,8 @@ const OfferHelpModal = props => {
     }), {
       onSuccess: (res) => {
         queryClient.invalidateQueries('requests')
+        setRequestDetail(res.requestDetails)
+        setOpenRequestDetail(true)
         addToast(res.message, { appearance: 'success', autoDismiss: true })
       },
       onError: (err) => addToast(err.message, { appearance: 'error', autoDismiss: true })
@@ -61,9 +70,18 @@ const OfferHelpModal = props => {
     if (invalidPhoneNumber(formState.phone)) {
       setIsPhoneValid(false)
     } else {
-      props.handleClose()
       mutateAsync()
     }
+  }
+
+  const handleDisclaimerClose = (disclaimerChecked) => {
+    setDisclaimerAccepted(disclaimerChecked)
+    setOpenDisclaimer(false)
+  }
+  
+  const handleModalClose = () => {
+    setOpenRequestDetail(false)
+    props.handleClose()
   }
 
   const handleTextChange = (event) => {
@@ -136,16 +154,43 @@ const OfferHelpModal = props => {
       <form name="form" onSubmit={handleSubmit}>
         <DialogContent>
           {renderForm()}
+          <div style={{paddingTop: 16}}>
+            <span>
+              Please read 
+              <Button onClick={() => setOpenDisclaimer(true)} color="primary">
+                Disclaimer
+              </Button>
+              before you add request.
+            </span>
+          </div>
         </DialogContent>
         <DialogActions>
           <OutlinedColorButton onClick={props.handleClose}>
             Cancel
           </OutlinedColorButton>
-          <ColorButton type='submit' variant="contained">
+          <ColorButton
+            type='submit'
+            variant="contained"
+            disabled={!disclaimerAccepted}
+          >
             Submit
           </ColorButton>
         </DialogActions>
       </form>
+      {openDisclaimer ?
+        <DisclaimerModal
+          open={openDisclaimer}
+          handleClose={handleDisclaimerClose}
+          disclaimerChecked={disclaimerAccepted}
+        />
+      : null }
+      {openRequestDetail ?
+        <RequestInfoModal
+          open={openRequestDetail}
+          handleClose={handleModalClose}
+          requestDetail={requestDetail}
+        />
+      : null }
     </Dialog>
   )
 }

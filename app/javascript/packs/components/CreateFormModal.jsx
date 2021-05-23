@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {
+  Button,
   Dialog,
   DialogActions,
   DialogContent,
@@ -14,6 +15,7 @@ import CustomTextField from './CustomTextField';
 import CustomSelectPicker from './CustomSelectPicker';
 import { postFetch } from '../helpers/fetchApi';
 import { ColorButton, OutlinedColorButton } from '../customStyle';
+import DisclaimerModal from './DisclaimerModal';
 
 const requestForOptions = [
   { name: 'Bed', value: 'Bed' },
@@ -40,10 +42,12 @@ const initialState = {
   name: '',
   age: '',
   address: '',
+  wardNo: '',
   phone: '',
   gender: '',
   urgency: '',
   noOfRequirements: 1,
+  preExistingDiseases: '',
   additionalInfo: ''
 }
 
@@ -64,6 +68,8 @@ const CreateFormModal = props => {
   const { addToast } = useToasts();
   const [formState, setFormState] = useState(initialState);
   const [isPhoneValid, setIsPhoneValid] = useState(true);
+  const [disclaimerAccepted, setDisclaimerAccepted] = useState(false)
+  const [openDisclaimer, setOpenDisclaimer] = useState(false);
 
   const { mutateAsync } = useMutation(
     () => createRequest({ request: formState }), {
@@ -77,6 +83,11 @@ const CreateFormModal = props => {
   const invalidPhoneNumber = phone => {
     const regex = /^\+?(?:977)?[ -]?(?:(?:(?:98|97)-?\d{8})|(?:01-?\d{7}))$/
     return phone.match(regex) === null
+  }
+
+  const handleDisclaimerClose = (disclaimerChecked) => {
+    setDisclaimerAccepted(disclaimerChecked)
+    setOpenDisclaimer(false)
   }
 
   const handleSubmit = (event) => {
@@ -138,13 +149,23 @@ const CreateFormModal = props => {
               handleTextChange={handleTextChange}
             />
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={9} sm={9}>
             <CustomTextField
               type='text'
               required
               name="address"
               label="Address"
               defaultValue={formState.address}
+              handleTextChange={handleTextChange}
+            />
+          </Grid>
+          <Grid item xs={3} sm={3}>
+            <CustomTextField
+              type='number'
+              required
+              name="wardNo"
+              label="Ward No"
+              defaultValue={formState.wardNo}
               handleTextChange={handleTextChange}
             />
           </Grid>
@@ -194,6 +215,16 @@ const CreateFormModal = props => {
           <Grid item xs={12}>
             <CustomTextField
               type='text'
+              name="preExistingDiseases"
+              label="Any Pre Existing Diseases(If yes, Specify)"
+              defaultValue={formState.preExistingDiseases}
+              handleTextChange={handleTextChange}
+              multiline
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <CustomTextField
+              type='text'
               name="additionalInfo"
               label="Additional Information(Optional)"
               defaultValue={formState.additionalInfo}
@@ -205,7 +236,7 @@ const CreateFormModal = props => {
       </>
     )
   }
-
+  console.log(disclaimerAccepted)
   return (
     <Dialog
       open={props.open}
@@ -216,16 +247,36 @@ const CreateFormModal = props => {
       <form name="form" onSubmit={handleSubmit} style={{ width: '100%' }}>
         <DialogContent>
           {renderForm()}
+          <div style={{paddingTop: 16}}>
+            <span>
+              Please read 
+              <Button onClick={() => setOpenDisclaimer(true)} color="primary">
+                Disclaimer
+              </Button>
+              before you add request.
+            </span>
+          </div>
         </DialogContent>
         <DialogActions>
           <OutlinedColorButton onClick={props.handleClose} color="default">
             Cancel
           </OutlinedColorButton>
-          <ColorButton type="submit" variant="contained">
+          <ColorButton
+            type="submit"
+            variant="contained"
+            disabled={!disclaimerAccepted}
+          >
             Submit
           </ColorButton>
         </DialogActions>
       </form>
+      {openDisclaimer ?
+        <DisclaimerModal
+          open={openDisclaimer}
+          handleClose={handleDisclaimerClose}
+          disclaimerChecked={disclaimerAccepted}
+        />
+      : null }
     </Dialog>
   )
 }

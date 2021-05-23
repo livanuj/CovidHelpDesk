@@ -42,10 +42,12 @@ class Api::V1::RequestsController < ApplicationController
       success = false
       status  = 422
       message = 'You already have help offer waiting for approval for this request.'
+      request_details = help_requests.as_json({only: nil})
     elsif associate_help_requests
       success = true
       status  = 200
       message = 'Help Offer Registered Successfully'
+      request_details = help_requests.as_json({only: nil})
     else
       success = false
       status  = 422
@@ -54,6 +56,7 @@ class Api::V1::RequestsController < ApplicationController
 
     render json: {
       success: success,
+      request_details: request_details,
       message: message
     }, status: status
   end
@@ -61,7 +64,11 @@ class Api::V1::RequestsController < ApplicationController
   private
 
   def request_params
-    params.require(:request).permit(:request_type, :name, :age, :address, :phone, :gender, :urgency, :no_of_requirements, :additional_info)
+    params.require(:request).permit(
+      :request_type, :name, :age, :address,
+      :phone, :gender, :urgency, :no_of_requirements,
+      :additional_info, :ward_no, :pre_existing_diseases
+    )
   end
 
   def helper_params
@@ -73,7 +80,7 @@ class Api::V1::RequestsController < ApplicationController
   end
 
   def help_requests
-    Request.where(id: params[:request_ids])
+    @help_requests ||= Request.where(id: params[:request_ids])
   end
 
   def has_duplicate_offer_request?
