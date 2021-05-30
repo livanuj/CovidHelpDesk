@@ -82,5 +82,5 @@ test:
 production:
   <<: *default
   database: covid_help_production
-  username: main
+  username: deploy
   password: <%= ENV['MAIN_DATABASE_PASSWORD'] %>
