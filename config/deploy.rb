@@ -1,15 +1,17 @@
 # config valid for current version and patch releases of Capistrano
 lock "~> 3.16.0"
 
-set :application, "main"
+set :user, "deploy"
 set :repo_url, "git@github.com:livanuj/CovidHelpDesk.git"
 
 # Default branch is :master
 # ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
 
 # Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/home/deploy/#{fetch :application}"
-set :rbenv_path, '/home/deploy/.rbenv'
+set :deploy_to, "/home/#{fetch :user}/main"
+set :rails_env, 'production'
+set :branch, ENV.fetch('BRANCH', 'main')
+set :rbenv_path, "/home/#{fetch :user}/.rbenv"
 # set :deploy_to, "/var/www/my_app_name"
 
 # Default value for :format is :airbrussh.
@@ -26,7 +28,7 @@ set :rbenv_path, '/home/deploy/.rbenv'
 # append :linked_files, "config/database.yml"
 
 # Default value for linked_dirs is []
-append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system', 'public/uploads'
+append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system', 'public/uploads',  'public/packs', 'node_modules'
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 
 # Default value for default_env is {}
@@ -40,3 +42,17 @@ set :keep_releases, 5
 
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
+
+before "deploy:assets:precompile", "deploy:yarn_install"
+
+namespace :deploy do
+  desc 'Run rake yarn:install'
+  task :yarn_install do
+    on roles(:web) do
+      within release_path do
+        execute("cd #{release_path} && yarn install --silent --no-progress --no-audit --no-optional")
+        execute("cd #{release_path} && bundle exec rails webpacker:compile")
+      end
+    end
+  end
+end
