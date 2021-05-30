@@ -9,6 +9,7 @@ set :repo_url, "git@github.com:livanuj/CovidHelpDesk.git"
 
 # Default deploy_to directory is /var/www/my_app_name
 set :deploy_to, "/home/deploy/#{fetch :application}"
+set :rbenv_path, '/home/deploy/.rbenv'
 # set :deploy_to, "/var/www/my_app_name"
 
 # Default value for :format is :airbrussh.
