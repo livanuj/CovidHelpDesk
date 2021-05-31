@@ -25,7 +25,7 @@ set :rbenv_path, "/home/#{fetch :user}/.rbenv"
 # set :pty, true
 
 # Default value for :linked_files is []
-append :linked_files, "config/database.yml"
+# append :linked_files, "config/database.yml"
 
 # Default value for linked_dirs is []
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system', 'public/uploads',  'public/packs', 'node_modules'
@@ -43,7 +43,7 @@ set :keep_releases, 5
 # Uncomment the following to require manually verifying the host key before first deploy.
 # set :ssh_options, verify_host_key: :secure
 
-before "deploy:assets:precompile", "deploy:yarn_install"
+# before "deploy:assets:precompile", "deploy:yarn_install"
 
 namespace :deploy do
   desc 'Run rake yarn:install'
@@ -51,7 +51,6 @@ namespace :deploy do
     on roles(:web) do
       within release_path do
         execute("cd #{release_path} && yarn install --silent --no-progress --no-audit --no-optional")
-        execute("cd #{release_path} && bundle exec rails webpacker:compile")
       end
     end
   end
