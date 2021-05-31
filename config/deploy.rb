@@ -23,9 +23,12 @@ set :rbenv_path, "/home/#{fetch :user}/.rbenv"
 
 # Default value for :pty is false
 # set :pty, true
+set :passenger_roles, :web
+set :passenger_restart_with_touch, true
 
 # Default value for :linked_files is []
 # append :linked_files, "config/database.yml"
+set :assets_roles, [:assets]
 
 # Default value for linked_dirs is []
 append :linked_dirs, 'log', 'tmp/pids', 'tmp/cache', 'tmp/sockets', 'vendor/bundle', '.bundle', 'public/system', 'public/uploads',  'public/packs', 'node_modules'
